@@ -1,0 +1,37 @@
+name: Convenitonal Pull Requests
+
+on:
+   pull_request:
+     types:
+      # Configure these types yourself!
+      - opened
+      - edited
+      - reopened
+      - synchronize
+  
+   workflow_dispatch:
+  
+jobs:
+  validate:
+
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Validate PR Use Cases
+      uses: nivisi/conventional_pull_requests@1.0.0
+      with:
+         # GitHub Access Token
+         # Required. Default is ${{ github.token }}
+         github-token: ${{ github.token }}
+  
+         # Message that will be posted as a comment in the PR
+         # In case the script finds an issue and will be capable of fixing it.
+         # {AUTHOR} will be the author of the PR
+         # {DIFF} is a suggested difference (old title vs new title)
+         message-to-post: |
+             Hey @{AUTHOR} 👋 I'm the PR Bot! 🤖 I noticed that the title of this Pull Request didn't match the required schema, so I've made a quick fix:
+
+             {DIFF}
